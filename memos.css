@@ -1,0 +1,90 @@
+#memos_main
+{
+}
+
+#memos_right
+{
+	height: 100%;
+	top: 0px;
+	right: 0px;
+	position: fixed;
+	z-index: 99999999;
+}
+
+#memos_right_container
+{
+	height: 100%;
+}
+
+#memos_right #memos_panel
+{
+	float: right;
+	border: 1px solid;
+	width: 20px;
+	height: 100%;
+	background-color: #fff;
+}
+
+#memos_exit_button, #memos_option_button, #memos_visible_button, .memos_item_close_button
+{
+	display: block;
+	width: 18px;
+	height: 18px;
+	overflow: hidden;
+	line-height: 1000px;
+	background-repeat: no-repeat;
+	background-image: url(memos.png);
+}
+
+#memos_exit_button
+{
+	background-position: -55px;
+}
+
+#memos_option_button
+{
+	background-position: -36px;
+}
+
+#memos_visible_button
+{
+}
+
+#memos_right #memos_visible_button
+{
+	position: absolute;
+	top: 50%;
+}
+
+#memos_list
+{
+	float: right;
+	list-style-type: none;
+}
+
+#memos_list .memos_item
+{
+	overflow: hidden;
+}
+
+.memos_item_close_button
+{
+	float: right;
+	background-position: -55px;
+}
+
+#memos_right #memos_list .memos_item
+{
+	width: 100px;
+	height: 30px;
+	background-color: #dddddd;
+}
+
+.memos_show #memos_visible
+{
+}
+
+.memos_hidden #memos_visible
+{
+}
+
