@@ -20,7 +20,7 @@ MEMOS.UI =
 		var mainUI = document.createElement( "div" );
 		mainUI.id = "memos_main";
 		mainUI.className = "memos_hidden";
-		mainUI.innerHTML = '<div id="memos_right"><div id="memos_right_container"><div id="memos_panel"><div id="memos_bar"><a id="memos_exit_button">X</a><a id="memos_option_button">*</a><a id="memos_visible_button">&lt;</a></div></div><ul id="memos_list" style="display: none;"><li id="memos_0" class="memos_item"><span class="memos_item_title">Memo1</span><span class="memos_item_close_button">X</span></li><li id="memos_1" class="memos_item"><span class="memos_item_title">Memo2</span><span class="memos_item_close_button">X</span></li><li id="memos_2" class="memos_item"><span class="memos_item_title">Memo3</span><span class="memos_item_close_button">X</span></li></ul></div></div>';
+		mainUI.innerHTML = '<div id="memos_right"><div id="memos_right_container"><div id="memos_panel"><div id="memos_bar"><a id="memos_exit_button">X</a><a id="memos_option_button">*</a><a id="memos_visible_button">&lt;</a></div></div><ul id="memos_list" style="display: none;"><li id="memos_0" class="memos_item"><span class="memos_item_title">Memo1</span><span class="memos_item_close_button">X</span></li><li id="memos_1" class="memos_item"><span class="memos_item_title">Memo2</span><span class="memos_item_close_button">X</span></li><li id="memos_2" class="memos_item"><span class="memos_item_title">Memo3</span><span class="memos_item_close_button">X</span></li></ul></div></div><div id="memos_edit" style="display: none;"><div id="memos_edit_1" class="memos_edit_item"><a id="memos_edit_close_button_1" class="memos_edit_close_button"></a><input id="memos_edit_title_1" value="Title1" /><textarea id="memos_edit_content_1">This is memo 1</textarea></div><div id="memos_edit_2" class="memos_edit_item"><a id="memos_edit_close_button_2" class="memos_edit_close_button"></a><input id="memos_edit_title_2" value="Title2" /><textarea id="memos_edit_content_2">This is memo 2</textarea></div></div>';
 
 		/*
 		<div id="memos_right">
@@ -48,20 +48,35 @@ MEMOS.UI =
 				</ul>
 			</div>
 		</div>
-		<div id="memos_memo">
-			<textarea id="memos_memo_edit"></textarea>
+		<div id="memos_edit" style="display: none;">
+			<div id="memos_edit_1" class="memos_edit_item">
+				<input id="memos_edit_title_1" value="Title1" />
+				<textarea id="memos_edit_content_1">This is memo 1</textarea>
+				<a id="memos_edit_close_button_1" class="memos_edit_close_button"></a>
+			</div>
+			<div id="memos_edit_2" class="memos_edit_item">
+				<input id="memos_edit_title_2" value="Title2" />
+				<textarea id="memos_edit_content_2">This is memo 2</textarea>
+				<a id="memos_edit_close_button_2" class="memos_edit_close_button"></a>
+			</div>
 		</div>
 		*/
 		document.getElementsByTagName( "body" )[0].appendChild( mainUI );
 
-		var memos_list = document.getElementById( "memos_list" );
+		var memo_list = document.getElementById( "memos_list" );
+		var memo_edit = document.getElementById( "memos_edit" );
 		var visible_button = document.getElementById( "memos_visible_button" );
 		visible_button.onclick = function( event )
 		{
-			if ( memos_list.style.display != "none" )
-				memos_list.style.display = "none";
+			if ( memo_list.style.display != "none" )
+				memo_list.style.display = "none";
 			else
-				memos_list.style.display = "block";
+				memo_list.style.display = "block";
+
+			if ( memo_edit.style.display != "none" )
+				memo_edit.style.display = "none";
+			else
+				memo_edit.style.display = "block";
 		}
 
 		return mainUI;

@@ -8,7 +8,7 @@
 	top: 0px;
 	right: 0px;
 	position: fixed;
-	z-index: 99999999;
+	z-index: 99999900;
 }
 
 #memos_right_container
@@ -25,7 +25,7 @@
 	background-color: #fff;
 }
 
-#memos_exit_button, #memos_option_button, #memos_visible_button, .memos_item_close_button
+#memos_exit_button, #memos_option_button, #memos_visible_button, .memos_item_close_button, .memos_edit_close_button
 {
 	display: block;
 	width: 18px;
@@ -86,5 +86,48 @@
 
 .memos_hidden #memos_visible
 {
+}
+
+#memos_edit
+{
+	position: fixed;
+	right: 30px;
+	bottom: 0px;
+	z-index: 99999999;
+}
+
+#memos_edit .memos_edit_item
+{
+	display: inline-block;
+	position: relative;
+	width: 260px;
+	height: 230px;
+	margin: 10px;
+}
+
+#memos_edit .memos_edit_item input,
+#memos_edit .memos_edit_item textarea
+{
+	display: block;
+	width: 100%;
+}
+
+#memos_edit .memos_edit_item input
+{
+	height: 30px;
+}
+
+#memos_edit .memos_edit_item textarea
+{
+	height: 100%;
+	resize: none;
+}
+
+#memos_edit .memos_edit_close_button
+{
+	position: absolute;
+	top: 2px;
+	right: 2px;
+	background-position: -55px;
 }
 
