@@ -1,4 +1,4 @@
-#memos_main
+#memos_frame
 {
 }
 
@@ -25,7 +25,7 @@
 	background-color: #fff;
 }
 
-#memos_exit_button, #memos_option_button, #memos_visible_button, .memos_item_close_button, .memos_edit_close_button
+#memos_exit_button, #memos_option_button, #memos_visible_button, .memos_item_close_button, .memos_memo_close_button
 {
 	display: block;
 	width: 18px;
@@ -88,7 +88,7 @@
 {
 }
 
-#memos_edit
+#memos_main
 {
 	position: fixed;
 	right: 30px;
@@ -96,7 +96,7 @@
 	z-index: 99999999;
 }
 
-#memos_edit .memos_edit_item
+#memos_main .memos_memo
 {
 	display: inline-block;
 	position: relative;
@@ -105,25 +105,25 @@
 	margin: 10px;
 }
 
-#memos_edit .memos_edit_item input,
-#memos_edit .memos_edit_item textarea
+#memos_main .memos_memo input,
+#memos_main .memos_memo textarea
 {
 	display: block;
 	width: 100%;
 }
 
-#memos_edit .memos_edit_item input
+#memos_main .memos_memo input
 {
 	height: 30px;
 }
 
-#memos_edit .memos_edit_item textarea
+#memos_main .memos_memo textarea
 {
 	height: 100%;
 	resize: none;
 }
 
-#memos_edit .memos_edit_close_button
+#memos_main .memos_memo_close_button
 {
 	position: absolute;
 	top: 2px;

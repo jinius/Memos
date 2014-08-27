@@ -28,9 +28,9 @@ MEMOS.UI =
 		this.css = this.loadCss( conf.CSS_URL );
 
 		var mainUI = document.createElement( "div" );
-		mainUI.id = "memos_main";
+		mainUI.id = "memos_frame";
 		mainUI.className = "memos_hidden";
-		mainUI.innerHTML = '<div id="memos_right"><div id="memos_right_container"><div id="memos_panel"><div id="memos_bar"><a id="memos_exit_button">X</a><a id="memos_option_button">*</a><a id="memos_visible_button">&lt;</a></div></div><ul id="memos_list" style="display: none;"></ul></div></div><div id="memos_edit" style="display: none;"><div id="memos_edit_10" class="memos_edit_item"><a id="memos_edit_close_button_1" class="memos_edit_close_button"></a><input id="memos_edit_title_1" value="Title1" /><textarea id="memos_edit_content_1">This is memo 1</textarea></div><div id="memos_edit_11" class="memos_edit_item"><a id="memos_edit_close_button_2" class="memos_edit_close_button"></a><input id="memos_edit_title_2" value="Title2" /><textarea id="memos_edit_content_2">This is memo 2</textarea></div></div>';
+		mainUI.innerHTML = '<div id="memos_right"><div id="memos_right_container"><div id="memos_panel"><div id="memos_bar"><a id="memos_exit_button">X</a><a id="memos_option_button">*</a><a id="memos_visible_button">&lt;</a></div></div><ul id="memos_list" style="display: none;"></ul></div></div><div id="memos_main" style="display: none;"></div>';
 
 		/*
 		mainUI.innerHTML = '
@@ -43,28 +43,16 @@ MEMOS.UI =
 						<a id="memos_visible_button">&lt;</a>
 					</div>
 				</div>
-				<ul id="memos_list" style="display: none;">
-				</ul>
+				<ul id="memos_list" style="display: none;"></ul>
 			</div>
 		</div>
-		<div id="memos_edit" style="display: none;">
-			<div id="memos_edit_1" class="memos_edit_item">
-				<input id="memos_edit_title_1" value="Title1" />
-				<textarea id="memos_edit_content_1">This is memo 1</textarea>
-				<a id="memos_edit_close_button_1" class="memos_edit_close_button"></a>
-			</div>
-			<div id="memos_edit_2" class="memos_edit_item">
-				<input id="memos_edit_title_2" value="Title2" />
-				<textarea id="memos_edit_content_2">This is memo 2</textarea>
-				<a id="memos_edit_close_button_2" class="memos_edit_close_button"></a>
-			</div>
-		</div>
+		<div id="memos_main" style="display: none;"></div>
 		';
 		*/
 		document.getElementsByTagName( "body" )[0].appendChild( mainUI );
 
 		var memo_list = document.getElementById( "memos_list" );
-		var memo_edit = document.getElementById( "memos_edit" );
+		var memo_main = document.getElementById( "memos_main" );
 		var visible_button = document.getElementById( "memos_visible_button" );
 		visible_button.onclick = function( event )
 		{
@@ -73,10 +61,10 @@ MEMOS.UI =
 			else
 				memo_list.style.display = "block";
 
-			if ( memo_edit.style.display != "none" )
-				memo_edit.style.display = "none";
+			if ( memo_main.style.display != "none" )
+				memo_main.style.display = "none";
 			else
-				memo_edit.style.display = "block";
+				memo_main.style.display = "block";
 		}
 
 		for ( i in memo_data.memo_list )
@@ -92,27 +80,54 @@ MEMOS.UI =
 	{
 		var memo_list = document.getElementById( "memos_list" );
 
+		// --------------------------------
+		//	item
+		// --------------------------------
 		var ui_item = document.createElement( "li" );
 		ui_item.id = "memos_" + memo_item.id;
 		ui_item.className = "memos_item";
 
-		var content = document.createElement( "span" );
-		content.className = "memos_item_title";
-		content.innerHTML = memo_item.title;
+		// --------------------------------
+		//	item > title
+		// --------------------------------
+		var title = document.createElement( "span" );
+		title.className = "memos_item_title";
+		title.innerHTML = memo_item.title;
 
-		ui_item.appendChild( content );
-		ui_item.innerHTML += '<span class="memos_item_close_button">X</span>';
-		/*
-		ui_item.innerHTML += '
-		<span class="memos_item_close_button">X</span>
-		';
-		*/
-
-		ui_item.addEventListener( 'dblclick', function()
+		// --------------------------------
+		//	item > close button
+		// --------------------------------
+		var closebtn = document.createElement( "span" );
+		closebtn.className = "memos_item_close_button";
+		closebtn.innerHTML = "X";
+		closebtn.addEventListener( 'click', (function( id )
 		{
-			this.openItem( memo_item );
-		}.bind(this) );
-		memos_list.appendChild( ui_item );
+			this.removeItemToList( id );
+		}).bind( this, memo_item.id ) );
+
+		// --------------------------------
+		//	add item to list
+		// --------------------------------
+		ui_item.appendChild( title );
+		ui_item.appendChild( closebtn );
+		ui_item.addEventListener( 'dblclick', (function( memo_item )
+		{
+			this.openMemo( memo_item );
+		}).bind( this, memo_item ) );
+		memo_list.appendChild( ui_item );
+	},
+
+	removeItemToList : function( id )
+	{
+		var memo_list = document.getElementById( "memos_list" );
+		for ( i in memo_list.childNodes )
+		{
+			if ( memo_list.childNodes[i].id == "memos_" + id )
+			{
+				memo_list.removeChild( memo_list.childNodes[i] );
+				break;
+			}
+		}
 	},
 	
 	addAddButtonToList : function()
@@ -124,18 +139,73 @@ MEMOS.UI =
 		ui_item.className = "memos_item";
 		ui_item.innerHTML = "+";
 
-		memos_list.appendChild( ui_item );
+		memo_list.appendChild( ui_item );
 	},
 
-	openItem : function( memo_item )
+	openMemo : function( memo_item )
 	{
-		if ( document.getElementById( "memos_edit_" + memo_item.id ) )
-		{
-			alert( "test" );
+		if ( document.getElementById( "memos_memo_" + memo_item.id ) )
 			return;
-		}
 
-		var memo_edit = document.getElementById( "memos_edit" );
+		var memo_list = document.getElementById( "memos_main" );
+
+		// --------------------------------
+		//	item
+		// --------------------------------
+		var ui_item = document.createElement( "div" );
+		ui_item.id = "memos_memo_" + memo_item.id;
+		ui_item.className = "memos_memo";
+
+		// --------------------------------
+		//	item > title
+		// --------------------------------
+		var title = document.createElement( "input" );
+		title.value = memo_item.title;
+
+		// --------------------------------
+		//	item > content
+		// --------------------------------
+		var content = document.createElement( "textarea" );
+		content.innerHTML = memo_item.content;
+
+		// --------------------------------
+		//	item > close button
+		// --------------------------------
+		var closebtn = document.createElement( "a" );
+		closebtn.className = "memos_memo_close_button";
+		closebtn.innerHTML = "X";
+		closebtn.addEventListener( 'click', (function( id )
+		{
+			this.closeMemo( id );
+		}).bind( this, memo_item.id ) );
+
+		// --------------------------------
+		//	add item to list
+		// --------------------------------
+		ui_item.appendChild( title );
+		ui_item.appendChild( content );
+		ui_item.appendChild( closebtn );
+		memo_list.appendChild( ui_item );
+		/*
+			<div id="memos_memo_1" class="memos_memo">
+				<input value="Title1" />
+				<textarea>This is memo 1</textarea>
+				<a class="memos_memo_close_button"></a>
+			</div>
+		 */
+	},
+
+	closeMemo : function( id )
+	{
+		var memo_list = document.getElementById( "memos_main" );
+		for ( i in memo_list.childNodes )
+		{
+			if ( memo_list.childNodes[i].id == "memos_memo_" + id )
+			{
+				memo_list.removeChild( memo_list.childNodes[i] );
+				break;
+			}
+		}
 	},
 
 	loadCss : function( url )
