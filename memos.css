@@ -46,10 +46,6 @@
 	background-position: -36px;
 }
 
-#memos_visible_button
-{
-}
-
 #memos_right #memos_visible_button
 {
 	position: absolute;
@@ -60,6 +56,7 @@
 {
 	float: right;
 	list-style-type: none;
+	z-index: -1;
 }
 
 #memos_list .memos_item
@@ -77,15 +74,38 @@
 {
 	width: 100px;
 	height: 30px;
-	background-color: #dddddd;
+	background-color: #eeeeee;
+	border: 1px solid #fff;
 }
 
-.memos_show #memos_visible
+#memos_add_button
 {
+	font-size: 24px;
+	text-align: center;
 }
 
-.memos_hidden #memos_visible
+.memos_show #memos_visible_button
 {
+	background-position: -18px;
+}
+
+.memos_hidden #memos_visible_button
+{
+	background-position: 0;
+}
+
+.memos_show #memos_list
+{
+	position: relative;
+	left: 0;
+	transition: left 1s;
+}
+
+.memos_hidden #memos_list
+{
+	position: relative;
+	left: 120px;
+	transition: left 1s;
 }
 
 #memos_main
@@ -121,6 +141,18 @@
 {
 	height: 100%;
 	resize: none;
+}
+
+.memos_show .memos_memo
+{
+	top: 0px;
+	transition: top 1s;
+}
+
+.memos_show .memos_memo
+{
+	top: 230px;
+	transition: top 1s;
 }
 
 #memos_main .memos_memo_close_button
