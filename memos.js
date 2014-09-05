@@ -62,23 +62,23 @@ MEMOS.UI =
 		var mainUI = document.createElement( "div" );
 		mainUI.id = "memos_frame";
 		mainUI.className = "memos_hidden";
-		mainUI.innerHTML = '<div id="memos_right"><div id="memos_right_container"><div id="memos_panel"><div id="memos_bar"><a id="memos_exit_button">X</a><a id="memos_option_button">*</a><a id="memos_visible_button">&lt;</a></div></div><ul id="memos_list"></ul></div></div><div id="memos_main" style="display: none;"></div>';
+		mainUI.innerHTML = '<div id="memos_right"><div id="memos_panel"><div id="memos_bar"><a id="memos_visible_button">&lt;</a><a id="memos_option_button">*</a></div></div><ul id="memos_list"></ul></div><div id="memos_bottom"><div id="memos_main"></div></div>';
 
 		/*
 		mainUI.innerHTML = '
 		<div id="memos_right">
-			<div id="memos_right_container">
-				<div id="memos_panel">
-					<div id="memos_bar">
-						<a id="memos_exit_button">X</a>
-						<a id="memos_option_button">*</a>
-						<a id="memos_visible_button">&lt;</a>
-					</div>
+			<div id="memos_panel">
+				<div id="memos_bar">
+					<a id="memos_visible_button">&lt;</a>
+					<a id="memos_option_button">*</a>
 				</div>
-				<ul id="memos_list"></ul>
+			</div>
+			<ul id="memos_list"></ul>
+		</div>
+		<div id="memos_bottom">
+			<div id="memos_main">
 			</div>
 		</div>
-		<div id="memos_main"></div>
 		';
 		*/
 		document.getElementsByTagName( "body" )[0].appendChild( mainUI );
@@ -92,11 +92,6 @@ MEMOS.UI =
 				mainUI.className = "memos_show";
 			else
 				mainUI.className = "memos_hidden";
-
-			if ( memo_main.style.display != "none" )
-				memo_main.style.display = "none";
-			else
-				memo_main.style.display = "block";
 		}) );
 
 		this.updateList();
@@ -218,7 +213,7 @@ MEMOS.UI =
 		//	item > close button
 		// --------------------------------
 		var closebtn = document.createElement( "a" );
-		closebtn.className = "memos_memo_close_button";
+		closebtn.className = "memos_close_button";
 		closebtn.innerHTML = "X";
 		closebtn.addEventListener( 'click', (function( id )
 		{

@@ -4,16 +4,11 @@
 
 #memos_right
 {
-	height: 100%;
+	position: fixed;
 	top: 0px;
 	right: 0px;
-	position: fixed;
-	z-index: 99999900;
-}
-
-#memos_right_container
-{
 	height: 100%;
+	z-index: 99999900;
 }
 
 #memos_right #memos_panel
@@ -25,7 +20,7 @@
 	background-color: #fff;
 }
 
-#memos_exit_button, #memos_option_button, #memos_visible_button, .memos_item_close_button, .memos_memo_close_button
+#memos_exit_button, #memos_option_button, #memos_visible_button, .memos_close_button
 {
 	display: block;
 	width: 18px;
@@ -36,85 +31,61 @@
 	background-image: url(memos.png);
 }
 
-#memos_exit_button
-{
-	background-position: -55px;
-}
-
-#memos_option_button
-{
-	background-position: -36px;
-}
-
-#memos_right #memos_visible_button
-{
-	position: absolute;
-	top: 50%;
-}
+#memos_exit_button { background-position: -55px; }
+#memos_option_button { background-position: -36px; }
 
 #memos_list
 {
 	float: right;
+	position: absolute;
+	transition: left 1s;
 	list-style-type: none;
 	z-index: -1;
 }
 
+.memos_show #memos_list { left: -140px; }
+.memos_hidden #memos_list { left: 0px; }
+
 #memos_list .memos_item
 {
+	width: 100px;
+	height: 30px;
 	overflow: hidden;
+	background-color: #eeeeee;
+	border: 1px solid #fff;
 }
 
-.memos_item_close_button
+#memos_list .memos_close_button
 {
 	float: right;
 	background-position: -55px;
 }
 
-#memos_right #memos_list .memos_item
-{
-	width: 100px;
-	height: 30px;
-	background-color: #eeeeee;
-	border: 1px solid #fff;
-}
-
-#memos_add_button
+#memos_list #memos_add_button
 {
 	font-size: 24px;
 	text-align: center;
 }
 
-.memos_show #memos_visible_button
-{
-	background-position: -18px;
-}
+.memos_show #memos_visible_button { background-position: -18px; }
+.memos_hidden #memos_visible_button { background-position: 0; }
 
-.memos_hidden #memos_visible_button
-{
-	background-position: 0;
-}
-
-.memos_show #memos_list
-{
-	position: relative;
-	left: 0;
-	transition: left 1s;
-}
-
-.memos_hidden #memos_list
-{
-	position: relative;
-	left: 120px;
-	transition: left 1s;
-}
-
-#memos_main
+#memos_bottom
 {
 	position: fixed;
 	right: 30px;
 	bottom: 0px;
 	z-index: 99999999;
 }
+
+#memos_main
+{
+	position: relative;
+	transition: top 1s;
+}
+
+.memos_show #memos_main { top: 0; }
+.memos_hidden #memos_main { top: 230px; }
 
 #memos_main .memos_memo
 {
@@ -143,19 +114,7 @@
 	resize: none;
 }
 
-.memos_show .memos_memo
-{
-	top: 0px;
-	transition: top 1s;
-}
-
-.memos_show .memos_memo
-{
-	top: 230px;
-	transition: top 1s;
-}
-
-#memos_main .memos_memo_close_button
+#memos_main .memos_memo .memos_close_button
 {
 	position: absolute;
 	top: 2px;
