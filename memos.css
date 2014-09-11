@@ -1,7 +1,26 @@
-#memos_frame
+#memos_frame { } 
+
+.memos_visible_button, .memos_option_button, .memos_close_button
 {
+	display: block;
+	width: 12px;
+	height: 12px;
+	margin: 1px;
+	overflow: hidden;
+	line-height: 1000px;
+	background-repeat: no-repeat;
+	background-image: url(memos_icon.png);
 }
 
+.memos_visible_button { width: 8px; margin: 2px; }
+.memos_show .memos_visible_button { background-position: -11px -1px; }
+.memos_hidden .memos_visible_button { background-position: -1px -1px; }
+.memos_option_button { background-position: -41px -1px; }
+.memos_close_button { background-position: -67px -1px; }
+
+/* -------------------------------- */
+/*	Right Panel
+/* -------------------------------- */
 #memos_right
 {
 	position: fixed;
@@ -13,53 +32,73 @@
 
 #memos_right #memos_panel
 {
-	float: right;
-	border: 1px solid;
-	width: 20px;
+	position: absolute;
+	transition: left 1s;
+	border-left: 1px solid;
+	width: 114px;
 	height: 100%;
-	background-color: #fff;
+	background-image: url(memos_panel_bg.png);
 }
 
-#memos_exit_button, #memos_option_button, #memos_visible_button, .memos_close_button
+.memos_show #memos_panel { left: -114px; }
+.memos_hidden #memos_panel { left: -14px; }
+
+#memos_panel .memos_visible_button
 {
-	display: block;
-	width: 18px;
-	height: 18px;
-	overflow: hidden;
-	line-height: 1000px;
-	background-repeat: no-repeat;
-	background-image: url(memos.png);
+	position: absolute;
+	top: 50%;
 }
 
-#memos_exit_button { background-position: -55px; }
-#memos_option_button { background-position: -36px; }
+#memos_panel .memos_option_button
+{
+	position: absolute;
+	top: 0;
+}
 
+/* -------------------------------- */
+/*	Right Panel > Memo List
+/* -------------------------------- */
 #memos_list
 {
 	float: right;
-	position: absolute;
-	transition: left 1s;
 	list-style-type: none;
-	z-index: -1;
 }
-
-.memos_show #memos_list { left: -140px; }
-.memos_hidden #memos_list { left: 0px; }
 
 #memos_list .memos_item
 {
 	width: 100px;
 	height: 30px;
 	overflow: hidden;
-	background-color: #eeeeee;
-	border: 1px solid #fff;
+	cursor: pointer;
+	-webkit-user-select: none;
+	background-color: #ddeeff;
+	border-top: 1px solid #fff;
 }
 
-#memos_list .memos_close_button
+.dummy
 {
-	float: right;
-	background-position: -55px;
+	position: fixed;
+	right: 0px;
+	bottom: 100%;
+	border: 1px solid;
+
+	width: 10px;
+	height: 10px;
+	z-index: 999999999;
 }
+
+.dummy.animation
+{
+	transition: 1s;
+	right: 110px;
+	bottom: 0;
+
+	width: 260px;
+	height: 240px;
+	z-index: 99999999;
+}
+
+#memos_list .memos_close_button { float: right; }
 
 #memos_list #memos_add_button
 {
@@ -67,13 +106,13 @@
 	text-align: center;
 }
 
-.memos_show #memos_visible_button { background-position: -18px; }
-.memos_hidden #memos_visible_button { background-position: 0; }
-
+/* -------------------------------- */
+/*	Bottom Area
+/* -------------------------------- */
 #memos_bottom
 {
 	position: fixed;
-	right: 30px;
+	right: 100px;
 	bottom: 0px;
 	z-index: 99999999;
 }
@@ -96,29 +135,14 @@
 	margin: 10px;
 }
 
-#memos_main .memos_memo input,
-#memos_main .memos_memo textarea
-{
-	display: block;
-	width: 100%;
-}
-
-#memos_main .memos_memo input
-{
-	height: 30px;
-}
-
-#memos_main .memos_memo textarea
-{
-	height: 100%;
-	resize: none;
-}
+#memos_main .memos_memo input, #memos_main .memos_memo textarea { display: block; width: 100%; }
+#memos_main .memos_memo input { height: 30px; }
+#memos_main .memos_memo textarea { height: 100%; resize: none; }
 
 #memos_main .memos_memo .memos_close_button
 {
 	position: absolute;
-	top: 2px;
-	right: 2px;
-	background-position: -55px;
+	top: 1px;
+	right: 1px;
 }
 

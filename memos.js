@@ -62,18 +62,16 @@ MEMOS.UI =
 		var mainUI = document.createElement( "div" );
 		mainUI.id = "memos_frame";
 		mainUI.className = "memos_hidden";
-		mainUI.innerHTML = '<div id="memos_right"><div id="memos_panel"><div id="memos_bar"><a id="memos_visible_button">&lt;</a><a id="memos_option_button">*</a></div></div><ul id="memos_list"></ul></div><div id="memos_bottom"><div id="memos_main"></div></div>';
+		mainUI.innerHTML = '<div id="memos_right"><div id="memos_panel"><ul id="memos_list"></ul><a id="memos_visible_button" class="memos_visible_button">&lt;</a><a id="memos_option_button" class="memos_option_button">*</a></div></div><div id="memos_bottom"><div id="memos_main"></div></div>';
 
 		/*
 		mainUI.innerHTML = '
 		<div id="memos_right">
 			<div id="memos_panel">
-				<div id="memos_bar">
-					<a id="memos_visible_button">&lt;</a>
-					<a id="memos_option_button">*</a>
-				</div>
+				<ul id="memos_list"></ul>
+				<a id="memos_visible_button" class="memos_visible_button">&lt;</a>
+				<a id="memos_option_button" class="memos_option_button">*</a>
 			</div>
-			<ul id="memos_list"></ul>
 		</div>
 		<div id="memos_bottom">
 			<div id="memos_main">
@@ -133,7 +131,7 @@ MEMOS.UI =
 		//	item > delete button
 		// --------------------------------
 		var closebtn = document.createElement( "span" );
-		closebtn.className = "memos_item_close_button";
+		closebtn.className = "memos_close_button";
 		closebtn.innerHTML = "X";
 		closebtn.addEventListener( 'click', (function( id )
 		{
@@ -146,10 +144,32 @@ MEMOS.UI =
 		// --------------------------------
 		ui_item.appendChild( title );
 		ui_item.appendChild( closebtn );
-		ui_item.addEventListener( 'dblclick', (function( memo_item )
+		ui_item.addEventListener( 'dblclick', (function( memo_item, ui_item )
 		{
+			var opened = document.getElementById( "memos_memo_" + memo_item.id );
+			if ( opened && opened == document.getElementById( "memos_main" ).lastChild )
+				return;
+
+			this.closeMemo( memo_item.id );
 			this.openMemo( memo_item );
-		}).bind( this, memo_item ) );
+
+			var animation = document.createElement( "div" );
+			//animation.offsetTop = ui_item.offsetTop;
+			//animation.offsetLeft = ui_item.offsetLeft;
+			animation.offsetTop = 0;
+			animation.offsetRight = 0;
+			animation.className = "dummy";
+			document.getElementById( "memos_panel").appendChild( animation );
+
+			window.setTimeout( ( function()
+			{
+				animation.className = "dummy animation";
+				window.setTimeout( (function()
+				{
+					document.getElementById( "memos_panel").removeChild( animation );
+				} ).bind(this), 1000 );
+			} ).bind(this), 0 );
+		}).bind( this, memo_item, ui_item ) );
 		ui_list.appendChild( ui_item );
 	},
 
@@ -226,7 +246,6 @@ MEMOS.UI =
 		ui_item.appendChild( title );
 		ui_item.appendChild( content );
 		ui_item.appendChild( closebtn );
-		memo_list.appendChild( ui_item );
 		/*
 			<div id="memos_memo_1" class="memos_memo">
 				<input value="Title1" />
@@ -234,9 +253,19 @@ MEMOS.UI =
 				<a class="memos_memo_close_button"></a>
 			</div>
 		*/
+
+		// --------------------------------
+		//	Show after 1 sec
+		// --------------------------------
+		ui_item.style.visibility = "hidden";
+		window.setTimeout( (function()
+		{
+			ui_item.style.visibility = "visible";
+		}), 1000 );
+		memo_list.appendChild( ui_item );
 	},
 
-	closeMemo : function( id )
+	closeMemo : function( id ) // TODO: change parameter
 	{
 		var memo_list = document.getElementById( "memos_main" );
 		for ( i in memo_list.childNodes )
