@@ -151,19 +151,25 @@ MEMOS.UI =
 				return;
 
 			this.closeMemo( memo_item.id );
-			this.openMemo( memo_item );
+			var target = this.openMemo( memo_item );
+
+			var rect = ui_item.getBoundingClientRect();
+			var rect2 = target.getBoundingClientRect();
 
 			var animation = document.createElement( "div" );
-			//animation.offsetTop = ui_item.offsetTop;
-			//animation.offsetLeft = ui_item.offsetLeft;
-			animation.offsetTop = 0;
-			animation.offsetRight = 0;
 			animation.className = "dummy";
+			animation.style.left = rect.left + "px";
+			animation.style.top = rect.top + "px";
+			animation.style.width = ( rect.right - rect.left ) + "px";
+			animation.style.height = ( rect.bottom - rect.top ) + "px";
 			document.getElementById( "memos_panel").appendChild( animation );
 
 			window.setTimeout( ( function()
 			{
-				animation.className = "dummy animation";
+				animation.style.left = rect2.left + "px";
+				animation.style.top = rect2.top + "px";
+				animation.style.width = ( rect2.right - rect2.left ) + "px";
+				animation.style.height = ( rect2.bottom - rect2.top ) + "px";
 				window.setTimeout( (function()
 				{
 					document.getElementById( "memos_panel").removeChild( animation );
@@ -263,6 +269,8 @@ MEMOS.UI =
 			ui_item.style.visibility = "visible";
 		}), 1000 );
 		memo_list.appendChild( ui_item );
+
+		return ui_item;
 	},
 
 	closeMemo : function( id ) // TODO: change parameter

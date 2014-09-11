@@ -78,24 +78,8 @@
 .dummy
 {
 	position: fixed;
-	right: 0px;
-	bottom: 100%;
 	border: 1px solid;
-
-	width: 10px;
-	height: 10px;
-	z-index: 999999999;
-}
-
-.dummy.animation
-{
 	transition: 1s;
-	right: 110px;
-	bottom: 0;
-
-	width: 260px;
-	height: 240px;
-	z-index: 99999999;
 }
 
 #memos_list .memos_close_button { float: right; }
@@ -133,6 +117,7 @@
 	width: 260px;
 	height: 230px;
 	margin: 10px;
+	float: right;
 }
 
 #memos_main .memos_memo input, #memos_main .memos_memo textarea { display: block; width: 100%; }
