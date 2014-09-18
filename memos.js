@@ -15,14 +15,19 @@ MEMOS.DATA =
 	{
 		if ( typeof(Storage) == "undefined" )
 		{
-			// TODO : no Local Storage support...
+			alert( "Warning: Local Storage not supported. Memo will not be saved." );
+			return;
 		}
 
 		// Dummy data
-		localStorage.setItem( "memo_list", '[ { "id" : 10, "title" : "Memo1", "content" : "This is Memo 1" }, { "id" : 11, "title" : "Memo2", "content" : "This is Memo 2" }, { "id" : 17, "title" : "Memo3", "content" : "This is Memo 3" } ]' );
+		if ( localStorage.memo_list == "" )
+		{
+			localStorage.setItem( "memo_list", "[]" );
+			localStorage.setItem( "memo_nextId", 1 );
+		}
 
 		this.memo_list = JSON.parse( localStorage.memo_list );
-		this.nextId = 1;	// TODO : get last ID
+		this.nextId = localStorage.memo_nextId;
 	},
 
 //	memo_list :
@@ -37,11 +42,13 @@ MEMOS.DATA =
 		var newItem =
 		{
 			"id" : this.nextId,
-			"title" : "NewMemo" + this.nextId,
-			"content" : "This is New Memo " + this.nextId
+			"title" : "New Memo",
+			"content" : ""
 		};
 		this.memo_list.splice( this.memo_list.length, 0, newItem );
 		this.nextId++;
+
+		this.save();
 
 		return newItem;
 	},
@@ -50,13 +57,27 @@ MEMOS.DATA =
 	{
 		var memo_list = this.memo_list;
 
-		for ( i in memo_list )
+		for ( var i in memo_list )
 		{
 			if ( id == memo_list[i].id )
 			{
 				memo_list.splice( i, 1 );
 			}
 		}
+
+		this.save();
+	},
+
+	save : function()
+	{
+		if ( typeof(Storage) == "undefined" )
+		{
+			alert( "Warning: Local Storage not supported. Memo will not be saved." );
+			return;
+		}
+
+		localStorage.memo_list = JSON.stringify( this.memo_list );
+		localStorage.memo_nextId = this.nextId;
 	}
 };
 
@@ -96,7 +117,7 @@ MEMOS.UI =
 		closebtn.addEventListener( 'click', (function( id )
 		{
 			this.memo_data.removeItem( id );
-			this.removeItemFromList( id );
+			this.removeItem( id );
 		}).bind( this, memo_item.id ) );
 
 		// --------------------------------
@@ -107,7 +128,16 @@ MEMOS.UI =
 		item.addEventListener( 'dblclick', this.openMemo.bind( this, memo_item ) );
 	},
 
-	removeItemFromList : function( id )
+	updateItem : function( memo_item )
+	{
+		var item = MAYBE.FRAME.getItem( memo_item.id ).firstChild;
+		if ( typeof( item ) == "undefined" )
+			return;
+
+		item.querySelector( ".memos_item_title" ).innerHTML = memo_item.title;
+	},
+
+	removeItem : function( id )
 	{
 		MAYBE.FRAME.removeItem( id );
 	},
@@ -141,33 +171,24 @@ MEMOS.UI =
 		item.className = "memos_memo";
 
 		// --------------------------------
-		//	item > title
-		// --------------------------------
-		var title = document.createElement( "input" );
-		title.value = memo_item.title;
-
-		// --------------------------------
 		//	item > sync status
 		// --------------------------------
 		var sync = document.createElement( "span" );
 		sync.className = "memos_sync_done";
 
 		// --------------------------------
+		//	item > title
+		// --------------------------------
+		var title = document.createElement( "input" );
+		title.value = memo_item.title;
+		title.addEventListener( 'keyup', onChange.bind( this ) );
+
+		// --------------------------------
 		//	item > content
 		// --------------------------------
 		var content = document.createElement( "textarea" );
-		content.innerHTML = memo_item.content;
-		content.addEventListener( 'keyup', function()
-		{
-			if ( sync.className == "memos_sync_done" )
-			{
-				sync.className = "memos_sync_progress";
-				setTimeout( function()
-				{
-					sync.className = "memos_sync_done";
-				}, 1000 );
-			}
-		} );
+		content.value = memo_item.content;
+		content.addEventListener( 'keyup', onChange.bind( this ) );
 
 		// --------------------------------
 		//	item > close button
@@ -179,6 +200,22 @@ MEMOS.UI =
 		{
 			this.closeMemo( id );
 		} ).bind( this, memo_item.id ) );
+
+		function onChange()
+		{
+			if ( sync.className == "memos_sync_done" )
+			{
+				sync.className = "memos_sync_progress";
+				setTimeout( ( function()
+				{
+					memo_item.title = title.value;
+					memo_item.content = content.value;
+					this.memo_data.save();
+					this.updateItem( memo_item );
+					sync.className = "memos_sync_done";
+				} ).bind( this ), 1000 );
+			}
+		}
 
 		// --------------------------------
 		//	add item to list
