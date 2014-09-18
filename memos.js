@@ -37,23 +37,23 @@ MEMOS.DATA =
 //		{ id : 17, title : "Memo3", content : "This is Memo 3" }
 //	],
 
-	addItem : function()
+	addMemo : function()
 	{
-		var newItem =
+		var newMemo =
 		{
 			"id" : this.nextId,
 			"title" : "New Memo",
 			"content" : ""
 		};
-		this.memo_list.splice( this.memo_list.length, 0, newItem );
+		this.memo_list.splice( this.memo_list.length, 0, newMemo );
 		this.nextId++;
 
 		this.save();
 
-		return newItem;
+		return newMemo;
 	},
 
-	removeItem : function( id )
+	removeMemo : function( id )
 	{
 		var memo_list = this.memo_list;
 
@@ -88,14 +88,14 @@ MEMOS.UI =
 		this.memo_data = memo_data;
 		var memo_list = memo_data.memo_list;
 
-		// Add Item to List
+		// Add Memo to List
 		for ( var i in memo_list )
-			this.addItemToList( memo_list[i] );
+			this.addMemoToList( memo_list[i] );
 		// Add "Add button" to List
 		this.addAddButtonToList();
 	},
 
-	addItemToList : function( memo_item )
+	addMemoToList : function( memo_item )
 	{
 		var item = document.createElement( "div" );
 		item.className = "memos_item";
@@ -116,8 +116,8 @@ MEMOS.UI =
 		closebtn.innerHTML = "X";
 		closebtn.addEventListener( 'click', (function( id )
 		{
-			this.memo_data.removeItem( id );
-			this.removeItem( id );
+			this.memo_data.removeMemo( id );
+			this.removeMemo( id );
 		}).bind( this, memo_item.id ) );
 
 		// --------------------------------
@@ -126,20 +126,6 @@ MEMOS.UI =
 		item.appendChild( title );
 		item.appendChild( closebtn );
 		item.addEventListener( 'dblclick', this.openMemo.bind( this, memo_item ) );
-	},
-
-	updateItem : function( memo_item )
-	{
-		var item = MAYBE.FRAME.getItem( memo_item.id ).firstChild;
-		if ( typeof( item ) == "undefined" )
-			return;
-
-		item.querySelector( ".memos_item_title" ).innerHTML = memo_item.title;
-	},
-
-	removeItem : function( id )
-	{
-		MAYBE.FRAME.removeItem( id );
 	},
 	
 	addAddButtonToList : function()
@@ -150,13 +136,31 @@ MEMOS.UI =
 
 		item.className = "memos_add_button";
 		item.innerHTML = "+";
-		item.addEventListener( 'click', (function( id )
-		{
-			MAYBE.FRAME.removeItem( "add" );
-			var newItem = this.memo_data.addItem();
-			this.addItemToList( newItem );
-			this.addAddButtonToList();
-		}).bind(this) );
+		item.addEventListener( 'click', this.addMemo.bind(this) );
+	},
+
+	addMemo : function()
+	{
+		MAYBE.FRAME.removeItem( "add" );
+		var newMemo = this.memo_data.addMemo();
+		this.addMemoToList( newMemo );
+		this.addAddButtonToList();
+		this.openMemo( newMemo );
+	},
+
+	updateMemo : function( memo_item )
+	{
+		var item = MAYBE.FRAME.getItem( memo_item.id ).firstChild;
+		if ( typeof( item ) == "undefined" )
+			return;
+
+		item.querySelector( ".memos_item_title" ).innerHTML = memo_item.title;
+	},
+
+	removeMemo : function( id )
+	{
+		MAYBE.FRAME.closeWindow( id );
+		MAYBE.FRAME.removeItem( id );
 	},
 
 	openMemo : function( memo_item )
@@ -181,14 +185,14 @@ MEMOS.UI =
 		// --------------------------------
 		var title = document.createElement( "input" );
 		title.value = memo_item.title;
-		title.addEventListener( 'keyup', onChange.bind( this ) );
+		title.addEventListener( 'keyup', onChange.bind(this) );
 
 		// --------------------------------
 		//	item > content
 		// --------------------------------
 		var content = document.createElement( "textarea" );
 		content.value = memo_item.content;
-		content.addEventListener( 'keyup', onChange.bind( this ) );
+		content.addEventListener( 'keyup', onChange.bind(this) );
 
 		// --------------------------------
 		//	item > close button
@@ -211,9 +215,9 @@ MEMOS.UI =
 					memo_item.title = title.value;
 					memo_item.content = content.value;
 					this.memo_data.save();
-					this.updateItem( memo_item );
+					this.updateMemo( memo_item );
 					sync.className = "memos_sync_done";
-				} ).bind( this ), 1000 );
+				} ).bind(this), 1000 );
 			}
 		}
 
@@ -227,10 +231,14 @@ MEMOS.UI =
 
 		w.appendChild( item );
 		MAYBE.FRAME.showWindow( MAYBE.FRAME.getItem( memo_item.id ), w );
+
+		title.focus();
+		title.select();
 	},
 
 	closeMemo : function( id ) // TODO: change parameter
 	{
+		this.memo_data.save();
 		MAYBE.FRAME.closeWindow( id );
 	}
 };

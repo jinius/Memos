@@ -50,6 +50,21 @@ MAYBE.FRAME = new ( function()
 		return item;
 	};
 
+	this.insertItem = function( id, elem )
+	{
+		debugger;	// Not using yet.
+		var item = document.getElementById( "maybe_item_" + id );
+		if ( item )
+			return item;
+
+		item = document.createElement( "li" );
+		item.id = "maybe_item_" + id;
+		item.className = "maybe_item";
+		document.getElementById( "maybe_list" ).insertBefore( item, elem );
+
+		return item;
+	};
+
 	this.removeItem = function( id )
 	{
 		var item = document.getElementById( "maybe_item_" + id );
