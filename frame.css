@@ -1,0 +1,115 @@
+#maybe_frame { position: fixed; z-index: 999999; }
+
+.maybe_visible_button, .maybe_option_button, .maybe_close_button
+{
+	display: block;
+	width: 12px;
+	height: 12px;
+	margin: 1px;
+	overflow: hidden;
+	line-height: 1000px;
+	background-repeat: no-repeat;
+	background-image: url(maybe_icon.png);
+}
+
+.maybe_visible_button { width: 8px; margin: 2px; }
+.maybe_show .maybe_visible_button { background-position: -11px -1px; }
+.maybe_hidden .maybe_visible_button { background-position: -1px -1px; }
+.maybe_option_button { background-position: -41px -1px; }
+.maybe_close_button { background-position: -67px -1px; }
+
+/* -------------------------------- */
+/*	Right Panel
+/* -------------------------------- */
+#maybe_right
+{
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	height: 100%;
+}
+
+#maybe_right #maybe_panel
+{
+	position: absolute;
+	transition: left 1s;
+	border-left: 1px solid;
+	width: 114px;
+	height: 100%;
+	background-image: url(maybe_panel_bg.png);
+}
+
+.maybe_show #maybe_panel { left: -114px; }
+.maybe_hidden #maybe_panel { left: -14px; }
+
+#maybe_panel .maybe_visible_button
+{
+	position: absolute;
+	top: 50%;
+}
+
+#maybe_panel .maybe_option_button
+{
+	position: absolute;
+	top: 0;
+}
+
+/* -------------------------------- */
+/*	Right Panel > Memo List
+/* -------------------------------- */
+#maybe_list
+{
+	float: right;
+	list-style-type: none;
+}
+
+#maybe_list .maybe_item
+{
+	width: 100px;
+	height: 30px;
+	overflow: hidden;
+	cursor: pointer;
+	-webkit-user-select: none;
+	background-color: #ddeeff;
+	border-top: 1px solid #fff;
+}
+
+.effect
+{
+	position: fixed;
+	border: 1px solid;
+	transition: 1s;
+}
+
+/* -------------------------------- */
+/*	Bottom Area
+/* -------------------------------- */
+#maybe_bottom
+{
+	position: fixed;
+	right: 100px;
+	bottom: 0px;
+}
+
+#maybe_main
+{
+	position: relative;
+	display: flex;
+	overflow: hidden;
+	transition: top 1s;
+}
+
+.maybe_show #maybe_main { top: 0; }
+.maybe_hidden #maybe_main { top: 230px; }
+
+#maybe_main .maybe_window
+{
+	display: block;
+	float: left;
+	position: relative;
+	width: 260px;
+	height: 230px;
+	margin: 10px;
+	transition: 1s;
+}
+
