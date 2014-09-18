@@ -19,8 +19,7 @@ MEMOS.DATA =
 			return;
 		}
 
-		// Dummy data
-		if ( localStorage.memo_list == "" )
+		if ( typeof( localStorage.memo_list ) == "undefined" )
 		{
 			localStorage.setItem( "memo_list", "[]" );
 			localStorage.setItem( "memo_nextId", 1 );
@@ -205,19 +204,32 @@ MEMOS.UI =
 			this.closeMemo( id );
 		} ).bind( this, memo_item.id ) );
 
+		function makeTitle( content )
+		{
+			if ( content.length < 8 )
+				return content;
+
+			return content.slice( 0, 6 ) + "...";
+		}
+
+		function saveMemo()
+		{
+			if ( title.value == "New Memo" && content.value != "" )
+				title.value = makeTitle( content.value );
+
+			memo_item.title = title.value;
+			memo_item.content = content.value;
+			this.memo_data.save();
+			this.updateMemo( memo_item );
+			sync.className = "memos_sync_done";
+		}
+
 		function onChange()
 		{
 			if ( sync.className == "memos_sync_done" )
 			{
 				sync.className = "memos_sync_progress";
-				setTimeout( ( function()
-				{
-					memo_item.title = title.value;
-					memo_item.content = content.value;
-					this.memo_data.save();
-					this.updateMemo( memo_item );
-					sync.className = "memos_sync_done";
-				} ).bind(this), 1000 );
+				setTimeout( saveMemo.bind(this), 1000 );
 			}
 		}
 
